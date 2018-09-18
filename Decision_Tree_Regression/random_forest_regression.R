@@ -5,8 +5,10 @@ dataset = dataset[2:3]
 
 # regressor
 #create regressor
-library(e1071)
-regressor= svm(formula= Salary ~ .,data= dataset, type= 'eps-regression')
+install.packages('randomForest')
+library(randomForest)
+set.seed(1234)
+regressor= randomForest(x= dataset[1], y=dataset$Salary, ntree=500)
 
 #predict with regression
 y_pred = predict(regressor, data.frame(Level = 6.5))
@@ -15,13 +17,12 @@ y_pred = predict(regressor, data.frame(Level = 6.5))
 #visualize regression
 library(ggplot2)
 
-ggplot() + geom_point(aes(x= dataset$Level, y=dataset$Salary), color='red')+ geom_line(aes(x=dataset$Level, y=predict(regressor, newdata= dataset)), color='blue')
-+ ggtitle("SVR")+ xlab("Level")+ ylab("Salary")
+
 
 #visualize regression smooth curve
 
-x_grid= seq(min(dataset$Level), max(dataset$Level),0.1)
+x_grid= seq(min(dataset$Level), max(dataset$Level),0.01)
 ggplot() + geom_point(aes(x= dataset$Level, y=dataset$Salary), color='red')+ geom_line(aes(x=x_grid, y=predict(regressor, newdata= data.frame(Level= x_grid))), color='blue')
-+ ggtitle("SVR")+ xlab("Level")+ ylab("Salary")
++ ggtitle("Random Forest")+ xlab("Level")+ ylab("Salary")
 
 
