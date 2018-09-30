@@ -8,7 +8,7 @@ plot_fn<- function(dataset){
   colnames(grid_set)= c('Age','EstimatedSalary')
   y_grid = predict(classifier, type='response', newdata= grid_set)
   
-  plot(set[,-3], main='SVM Classfication', xlab= 'Age', ylab='Estimated Salary',
+  plot(set[,-3], main='Kernel SVM Classfication', xlab= 'Age', ylab='Estimated Salary',
        xlim= range(X1), ylim=range(X2))
   contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add=TRUE)
   points(grid_set, pch='.', col=ifelse(y_grid==1, 'blue', 'tomato'))
@@ -36,8 +36,8 @@ library(e1071)
 classifier= svm(formula= Purchased ~ ., 
                 data= training_set,
                 type= 'C-classification',
-                kernel= 'linear'
-)
+                kernel= 'radial'
+                )
 
 
 
