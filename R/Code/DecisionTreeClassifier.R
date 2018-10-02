@@ -8,7 +8,7 @@ plot_fn<- function(dataset){
   colnames(grid_set)= c('Age','EstimatedSalary')
   y_grid = predict(classifier, type='class', newdata= grid_set)
   
-  plot(set[,-3], main='Naive Bayes Classfication', xlab= 'Age', ylab='Estimated Salary',
+  plot(set[,-3], main='Decision Tree Classfication', xlab= 'Age', ylab='Estimated Salary',
        xlim= range(X1), ylim=range(X2))
   contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add=TRUE)
   points(grid_set, pch='.', col=ifelse(y_grid==1, 'blue', 'tomato'))
@@ -30,17 +30,16 @@ training_set =subset(dataset, split==TRUE)
 test_set = subset(dataset, split==FALSE)
 
 #Feature Scaling
-training_set[,1:2] = scale(training_set[,1:2])
-test_set[,1:2]= scale(test_set[,1:2])
+#training_set[,1:2] = scale(training_set[,1:2])
+#test_set[,1:2]= scale(test_set[,1:2])
 
 
 
 
 #classifier
-library(e1071)
-classifier= naiveBayes(x=training_set[-3],
-                       y= training_set$Purchased)
-
+library(rpart)
+classifier= rpart(formula = Purchased ~ .,
+                  data= training_set)
 
 
 
@@ -52,12 +51,9 @@ y_pred= predict(classifier, type='class', newdata= test_set[-3])
 #confusion matrix
 cm = table(test_set[,3], y_pred)
 
-#plot training set results
-plot_fn(training_set)
-
-#test set visualization
-plot_fn(test_set)
-
+#plot
+plot(classifier)
+text(classifier)
 
 
 

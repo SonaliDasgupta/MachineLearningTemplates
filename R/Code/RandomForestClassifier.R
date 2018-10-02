@@ -30,16 +30,15 @@ training_set =subset(dataset, split==TRUE)
 test_set = subset(dataset, split==FALSE)
 
 #Feature Scaling
-#training_set[,1:2] = scale(training_set[,1:2])
-#test_set[,1:2]= scale(test_set[,1:2])
+training_set[,1:2] = scale(training_set[,1:2])
+test_set[,1:2]= scale(test_set[,1:2])
 
 
 
 
 #classifier
-library(rpart)
-classifier= rpart(formula = Purchased ~ .,
-                  data= training_set)
+library(randomForest)
+classifier= randomForest(x= training_set[-3], y=training_set$Purchased, ntree = 100)
 
 
 
@@ -52,8 +51,10 @@ y_pred= predict(classifier, type='class', newdata= test_set[-3])
 cm = table(test_set[,3], y_pred)
 
 #plot
+plot_fn(training_set)
+plot_fn(test_set)
 plot(classifier)
-text(classifier)
+#text(classifier)
 
 
 

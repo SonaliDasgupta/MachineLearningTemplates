@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Sep 30 18:40:02 2018
+
+@author: Admin
+"""
 plot_fn<- function(dataset){
   #install.packages('ElemStatLearn')
   library(ElemStatLearn)
@@ -37,7 +43,7 @@ test_set = subset(dataset, split==FALSE)
 
 
 #classifier
-library(rpart)
+library(randomForest)
 classifier= rpart(formula = Purchased ~ .,
                   data= training_set)
 
@@ -54,6 +60,7 @@ cm = table(test_set[,3], y_pred)
 #plot
 plot(classifier)
 text(classifier)
+
 
 
 
