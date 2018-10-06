@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 dataset= pd.read_csv('D:/Udemy_ML/Apriori/Market_Basket_Optimisation.csv', header=None )
-dataset= dataset.dropna()
+
 transactions= []
 for i in range(0,7501):
     transactions.append([str(dataset.values[i, j]) for j in range(0,20)])
