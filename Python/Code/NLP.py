@@ -1,0 +1,53 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Oct  6 22:05:38 2018
+
+@author: Admin
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+dataset = pd.read_csv("D:/Udemy_ML/Natural_Language_Processing/Restaurant_Reviews.tsv", delimiter = "\t", quoting=3)
+
+#clean the reviews
+import re
+import nltk
+
+#nltk.download('stopwords')
+
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+
+corpus = []
+for i in range(0 , dataset.shape[0]):
+    review = re.sub('[^a-zA-Z]', ' ', dataset['Review'][i] )
+    review = review.lower()
+    review = review.split()
+    stemmer = PorterStemmer()
+    review = [stemmer.stem(word) for word in review if not word in set(stopwords.words('english')) ]
+    review = ' '.join(review)
+    corpus.append(review)
+    
+#creating Bag of Words Model
+from sklearn.feature_extraction.text import CountVectorizer
+cv = CountVectorizer(max_features = 1500)
+X = cv.fit_transform(corpus).toarray()
+
+y = dataset.iloc[:, 1].values
+
+from sklearn.cross_validation import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=0)
+
+from sklearn.naive_bayes import GaussianNB
+classifier = GaussianNB() #create classifier
+classifier.fit(X_train, y_train)
+
+#predict test results
+y_pred= classifier.predict(X_test)
+
+#Confusion Matrix
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+
