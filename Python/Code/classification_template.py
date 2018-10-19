@@ -25,8 +25,8 @@ X_train[:,0]=le_train.fit_transform(X_train[:,0])
 oh_train= OneHotEncoder(categorical_features=[0])
 X_train=oh_train.fit_transform(X_train).toarray()
 
-le_test= LabelEncoder()
-X_test[:,0]=le_test.fit_transform(X_test[:,0])
+
+X_test[:,0]=le_train.transform(X_test[:,0])
 oh_test= OneHotEncoder(categorical_features=[0])
 X_test=oh_test.fit_transform(X_test).toarray()"""
 

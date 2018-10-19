@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Created on Fri Oct 19 17:38:37 2018
+
+@author: Admin
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Thu Oct 18 21:20:41 2018
 
 @author: Admin
@@ -16,7 +23,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-data= pd.read_csv("D:/Udemy_ML/Kernel_PCA/Social_Network_Ads.csv")
+data= pd.read_csv("D:\\Udemy_ML\\Kernel_PCA\\Social_Network_Ads.csv")
 X = data.iloc[:,1:len(data.columns)-1].values
 y= data.iloc[:,-1].values
 
@@ -25,29 +32,27 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.2, random_state=0)
 
 #Encoding
-"""from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+le_1 = LabelEncoder()
+X_train[:,0] = le_1.fit_transform(X_train[:,0])
+X_test[:,0] = le_1.transform(X_test[:,0])
+#oh_1 = OneHotEncoder(categorical_features=[1])
+#X_train = oh_1.fit_transform(X_train)
+#X_test = oh_1.transform(X_test)
 
-le_train= LabelEncoder()
-X_train[:,0]=le_train.fit_transform(X_train[:,0])
-oh_train= OneHotEncoder(categorical_features=[0])
-X_train=oh_train.fit_transform(X_train).toarray()
 
-le_test= LabelEncoder()
-X_test[:,0]=le_test.fit_transform(X_test[:,0])
-oh_test= OneHotEncoder(categorical_features=[0])
-X_test=oh_test.fit_transform(X_test).toarray()"""
 
 #Scaling
 from sklearn.preprocessing import StandardScaler
 sc_X = StandardScaler()
-X_train = sc_X.fit_transform(X_train)
-X_test = sc_X.transform(X_test)
+X_train[:, 1:3] = sc_X.fit_transform(X_train[:, 1:3])
+X_test[:,1:3] = sc_X.transform(X_test[:,1:3])
 
-#Apply LDA
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
-lda = LDA(n_components = None)
-X_train = lda.fit_transform(X_train, y_train)
-X_test = lda.transform(X_test)
+#Apply Kernel PCA
+from sklearn.decomposition import KernelPCA
+kpca = KernelPCA(n_components = 2, kernel = 'rbf')
+X_train = kpca.fit_transform(X_train, y_train)
+X_test = kpca.transform(X_test)
 
 
 #Logistic Regression
