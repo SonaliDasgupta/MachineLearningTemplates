@@ -32,8 +32,8 @@ training_set[,1:2] = scale(training_set[,1:2])
 test_set[,1:2]= scale(test_set[,1:2])
 
 #KernelPCA
-library(kernlab)
-kpca = KernelPCA(~., data = training_set[-3], kernel = 'rbfdot', features=2)
+library('kernlab')
+kpca = kpca(~., data = training_set[-3], kernel = 'rbfdot', features=2)
 training_set_pca = as.data.frame(predict(kpca, training_set))
 training_set_pca$Purchased = training_set$Purchased
 test_set_pca = as.data.frame(predict(kpca, test_set))
